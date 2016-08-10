@@ -1,33 +1,46 @@
 package de.retterdesapok.jettydooropener;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 public class DatabaseHelper {
-
-	public static String DATABASE_NAME = "~/DoorOpener.sqlite";
 	
-	public static void ensureDatabaseExists() throws ClassNotFoundException, SQLException {
-        Class.forName("org.sqlite.JDBC");
- 
-        String makeUsersTable = "CREATE TABLE IF NOT EXISTS users (id integer, passwordhash text, remaininglogins integer)";
-        String makeLogTable = "CREATE TABLE IF NOT EXISTS logs (id integer, userid integer, time text, success text)";
+	private static final String SQL_SELECT_USER = "SELECT ID, USERNAME, PASSWORDHASH, FAILEDLOGINCOUNT, REMAININGLOGINS "
+			+ " FROM USER "
+			+ " WHERE USERNAME = :1 "
+			+ " AND PASSWORDHASH = :2 ";
+	
+	private static final String SQL_INCREMENT_FAILED_LOGIN_COUNT_FOR_USER = "UPDATE FAILEDLOGINCOUNT = FAILEDLOGINCOUNT + 1 WHERE USERNAME = :1";
+	
+	public static User loginUserWithNameAndPasswordHash(String username, String passwordhash) throws SQLException {
+		try (PreparedStatement statement = Database.GET().createPreparedStatement(SQL_SELECT_USER)) {
+			statement.setString(0, username);
+			statement.setString(1, passwordhash);
 
-        Connection conn = DriverManager.getConnection("jdbc:sqlite" + ":" + DATABASE_NAME);
+			ResultSet result = statement.executeQuery();
 
-        try {
-            Statement stmt = conn.createStatement();
-            try {
-                stmt.setQueryTimeout(30);
-                stmt.executeUpdate(makeUsersTable);
-                stmt.executeUpdate(makeLogTable);
-            } finally {
-                try { stmt.close(); } catch (Exception ignore) {}
-            }
-        } finally {
-            try { conn.close(); } catch (Exception ignore) {}
-        }
+			while (result.next()) {
+				User user = new User(result.getInt("ID"), 
+						result.getString("USERNAME"), 
+						result.getString("PASSWORDHASH"),
+						result.getInt("FAILEDLOGINCOUNT"), 
+						result.getInt("REMAININGLOGINS"));
+				
+				return user;
+			}
+		}
+		
+		// No user has been found with this combination, increment failed login counter if user exists
+		incrementUsersFailedLogins(username);
+		
+		return null;
+	}
+	
+	public static void incrementUsersFailedLogins(String username) throws SQLException {
+		try (PreparedStatement statement = Database.GET().createPreparedStatement(SQL_INCREMENT_FAILED_LOGIN_COUNT_FOR_USER)) {
+			statement.setString(0, username);
+			statement.executeUpdate();
+		}
 	}
 }
