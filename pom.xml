@@ -8,7 +8,9 @@
   <name>DoorOpener</name>
   
    <properties>
-      <jettyVersion>9.4.0.M0</jettyVersion>
+    <jettyVersion>9.4.0.M0</jettyVersion>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
   
   <url>http://maven.apache.org</url>
@@ -46,7 +48,11 @@
   	<plugin>
   	<groupId>org.eclipse.jetty</groupId>
   	<artifactId>jetty-maven-plugin</artifactId>
-  	<version>9.4.0.M0</version>
+  	<version>9.3.11.v20160721</version>
+  	 <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
 	</plugin>
   </plugins>
   </build>
