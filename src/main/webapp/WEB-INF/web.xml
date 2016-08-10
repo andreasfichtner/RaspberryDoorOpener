@@ -1,0 +1,31 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	
+	<display-name>Door opener</display-name>
+    <description>
+        DoorOpener
+    </description>
+
+    <servlet>
+        <servlet-name>HelloWorldServlet</servlet-name>
+        <servlet-class>de.retterdesapok.jettydooropener.HelloWorldServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>HelloWorldServlet</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>OpenDoorServlet</servlet-name>
+        <servlet-class>de.retterdesapok.jettydooropener.OpenDoorServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>OpenDoorServlet</servlet-name>
+        <url-pattern>/open</url-pattern>
+    </servlet-mapping>
+	
+</web-app>
