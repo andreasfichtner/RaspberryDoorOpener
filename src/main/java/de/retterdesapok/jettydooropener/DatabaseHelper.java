@@ -11,12 +11,12 @@ public class DatabaseHelper {
 			+ " WHERE USERNAME = :1 "
 			+ " AND PASSWORDHASH = :2 ";
 	
-	private static final String SQL_INCREMENT_FAILED_LOGIN_COUNT_FOR_USER = "UPDATE FAILEDLOGINCOUNT = FAILEDLOGINCOUNT + 1 WHERE USERNAME = :1";
+	private static final String SQL_INCREMENT_FAILED_LOGIN_COUNT_FOR_USER = "UPDATE USER SET FAILEDLOGINCOUNT = FAILEDLOGINCOUNT + 1 WHERE USERNAME = :1";
 	
 	public static User loginUserWithNameAndPasswordHash(String username, String passwordhash) throws SQLException {
 		try (PreparedStatement statement = Database.GET().createPreparedStatement(SQL_SELECT_USER)) {
-			statement.setString(0, username);
-			statement.setString(1, passwordhash);
+			statement.setString(1, username);
+			statement.setString(2, passwordhash);
 
 			ResultSet result = statement.executeQuery();
 
@@ -39,7 +39,7 @@ public class DatabaseHelper {
 	
 	public static void incrementUsersFailedLogins(String username) throws SQLException {
 		try (PreparedStatement statement = Database.GET().createPreparedStatement(SQL_INCREMENT_FAILED_LOGIN_COUNT_FOR_USER)) {
-			statement.setString(0, username);
+			statement.setString(1, username);
 			statement.executeUpdate();
 		}
 	}

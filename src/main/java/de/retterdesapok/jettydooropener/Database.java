@@ -11,13 +11,18 @@ import java.sql.Statement;
 public class Database {
 
 	public static final String DB_CONNECTION_STRING = "jdbc:sqlite:DoorOpener.sqlite";
-	private static final String CREATE_STATEMENT_PATH = "sql/create_statement.sql";
+	private static final String CREATE_STATEMENT_PATH = "src/main/resources/sql/create_database.sql";
 
 	private static Database INSTANCE = null;
 
 	private Connection connection;
 
 	private Database() {
+	    try {
+			Class.forName("org.sqlite.JDBC");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		ensureDatabaseExists();
 	}
 

@@ -27,7 +27,7 @@ public class OpenDoorServlet extends HttpServlet {
 			return;
 		}
 
-		response.getOutputStream().println("Authenticating...");
+		response.getOutputStream().print("Authenticating...");
 		String passwordmd5 = null;
 
 		try {
@@ -47,11 +47,11 @@ public class OpenDoorServlet extends HttpServlet {
 					response.setStatus(403);
 					return;
 				} else if (user.getRemainingLogins() <= 0) {
-					response.getOutputStream().println("No logins left...");
+					response.getOutputStream().println("No logins left.");
 					response.setStatus(403);
 					return;
 				} else if (user.getFailedLoginCount() <= 3 && user.getRemainingLogins() > 0) {
-					response.getOutputStream().println("Activating relay...");
+					response.getOutputStream().println("Success. TODO...");
 					response.setStatus(200);
 				}
 			} catch (SQLException e) {
