@@ -20,7 +20,7 @@ A sqlite-database is used for user authentication. To open the door, either poin
 
 ## Setup
 1. Setup your hardware as described in [hardwaresetup.md](https://github.com/retterdesapok/RaspberryDoorOpener/blob/master/hardwaresetup.md "hardwaresetup.md")
-2. Start the web server 
+2. Start the web server  
 To run a quick test, check out this repo on your raspberry and type 
 
         mvn jetty:run
