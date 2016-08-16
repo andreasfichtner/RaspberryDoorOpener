@@ -2,18 +2,22 @@
 
 Right now, the jetty server will not actually trigger the relay, it will only display a message to confirm your login.
 
-### Introduction
+## Introduction
+### What?
 Some houses and apartments are equipped with automatic door openers. The door opener switch connects a circuit which powers
 an electromagnet that moves part of the lock and thus allows the door to be opened.
 So why not replace that switch with a relay and open the door with an HTTP-Request*?
 
 *Actually, there are many good reasons against this, so please only try this if you know what you are doing. This is a just for fun project and you should not expect the authentication to be bullet proof. Enable https in jetty. Also, your raspberry pi should not be reachable from outside your home wifi and have strong ssh passwords.
 
-### Details?
+### Why?
+Because we can.
+
+### How?
 A jetty webserver running on the raspberry will trigger a relay to close the door opener circuit.
 A sqlite-database is used for user authentication. To open the door, either point your browser to raspberrypi:8080 and fill in your data or send an http post with username and password fields.
 
-### Setup
+## Setup
 1. Setup your hardware as described in [hardwaresetup.md](https://github.com/retterdesapok/RaspberryDoorOpener/blob/master/hardwaresetup.md "hardwaresetup.md")
 2. Start the web server 
 To run a quick test, check out this repo on your raspberry and type 
