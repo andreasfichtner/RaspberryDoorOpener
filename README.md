@@ -15,7 +15,8 @@ A sqlite-database is used for user authentication. To open the door, either poin
 
 ### Setup
 1. Setup your hardware as described in [hardwaresetup.md](https://github.com/retterdesapok/RaspberryDoorOpener/blob/master/hardwaresetup.md "hardwaresetup.md")
-2. To run a quick test, check out this repo on your raspberry and type 
+2. Start the web server 
+To run a quick test, check out this repo on your raspberry and type 
 
         mvn jetty:run
 in your terminal.
@@ -23,7 +24,7 @@ To run it more permanently (see my note above), build it as a war file
         
         mvn package
 and run it in a jetty server.
-3. 
+3. Create a user
 
 - Open raspberrypi:8080 (or any URL you might have chosen) and submit an empty form. This will create an empty sql database with a user table. For obvious reasons, no default user is created.
 - Think of a password and generate its md5 hash.
