@@ -9,23 +9,26 @@
   <title>raspi door opener</title>
 </head>
 <body>
-    <div class="card-panel grey darken-2" style="width: 500px;  margin: auto; margin-top: 100px">
-    <h3 class="grey-text lighten-4">Login</h3>
+    <div class="card-panel purple darken-5" style="width: 500px;  margin: auto; margin-top: 100px; height:325px">
+	    <div class="nav-wrapper">
+	         <h3 class="white-text">Login</h3>
+	    </div>
+    
 	    <form method="post" action="/open">
-		        <div class="input-field col s6 white-text">
+		        <div class="input-field green-text text-lighten-4">
 		          <input id="username" type="text" name="username" class="validate">
-		          <label for="username" class="grey-text lighten-4">Username</label>
+		          <label for="username" class="green-text text-lighten-4">Username</label>
 		        </div>
 		       
-		        <div class="input-field col s6 white-text">
+		        <div class="input-field green-text text-lighten-4">
 		          <input id="password" type="password" name="password" class="validate">
-		          <label for="password" class="grey-text lighten-4">Password</label>
+		          <label for="password" class="green-text text-lighten-4">Password</label>
 		        </div>
-			<button class="btn waves-effect waves-light red lighten-1" type="submit" name="/open">Open<i class="material-icons right">send</i>	      
+			<button class="btn waves-effect waves-light green lighten-4 purple-text" type="submit" name="/open">Open<i class="material-icons right">send</i>	      
 		</form>
     </div>
-    
-    <!--Import jQuery before materialize.js-->
+
+     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
 </body>

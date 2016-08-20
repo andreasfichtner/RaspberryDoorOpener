@@ -2,8 +2,6 @@ package de.retterdesapok.jettydooropener;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
-
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +13,11 @@ public class OpenDoorServlet extends HttpServlet {
 	public static String PARAM_USERNAME = "username";
 	public static String PARAM_PASSWORD = "password";
 
+	@Override
+	public void init() {
+	      // TODO init gpio
+	   }
+	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -42,19 +45,27 @@ public class OpenDoorServlet extends HttpServlet {
 		if (passwordmd5 != null) {
 			try {
 				User user = DatabaseHelper.loginUserWithNameAndPasswordHash(username, passwordmd5);
+				request.setAttribute("textcolor", "white-text");
+
 				if (user == null || user.getFailedLoginCount() > 3) {
-					response.getOutputStream().println("Wrong username or password.");
-					response.setStatus(403);
-					return;
+					request.setAttribute("message", "lock");
+					request.setAttribute("message2", "Wrong username or password.");
+					request.setAttribute("backgroundcolor", "red");
 				} else if (user.getRemainingLogins() <= 0) {
-					response.getOutputStream().println("No logins left.");
-					response.setStatus(403);
-					return;
+					response.getOutputStream().println();
+					request.setAttribute("message", "lock");
+					request.setAttribute("message2", "No logins left.");
+					request.setAttribute("backgroundcolor", "red");
 				} else if (user.getFailedLoginCount() <= 3 && user.getRemainingLogins() > 0) {
-					response.getOutputStream().println("Success. TODO...");
-					response.setStatus(200);
+					request.setAttribute("message", "lock_open");
+					request.setAttribute("backgroundcolor", "green");
+					
+					// TODO open door
 				}
-			} catch (SQLException e) {
+
+				request.getRequestDispatcher("/info.jsp").forward(request, response);
+				return;
+			} catch (Exception e) {
 				response.getOutputStream().println(e.getLocalizedMessage());
 				response.getOutputStream().println(e.getStackTrace().toString());
 				response.setStatus(500);
@@ -63,4 +74,7 @@ public class OpenDoorServlet extends HttpServlet {
 		}
 	}
 
+	public void destroy() {
+	      // TODO release gpio in correct state
+	   }
 }
