@@ -6,17 +6,30 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.RaspiPin;
+
 public class OpenDoorServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
 	public static String PARAM_USERNAME = "username";
 	public static String PARAM_PASSWORD = "password";
-
+	
+	final GpioController gpio = GpioFactory.getInstance();
+	GpioPinDigitalOutput pin = null;
+	
 	@Override
 	public void init() {
-	      // TODO init gpio
-	   }
+		
+		pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "relay1", PinState.HIGH);
+
+        // We never want low, except for the second where we open the door
+        pin.setShutdownOptions(true, PinState.HIGH);
+	}
 	
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,21 +59,19 @@ public class OpenDoorServlet extends HttpServlet {
 			try {
 				User user = DatabaseHelper.loginUserWithNameAndPasswordHash(username, passwordmd5);
 				request.setAttribute("textcolor", "white-text");
+				request.setAttribute("message", "lock");
+				request.setAttribute("backgroundcolor", "red");
 
 				if (user == null || user.getFailedLoginCount() > 3) {
-					request.setAttribute("message", "lock");
 					request.setAttribute("message2", "Wrong username or password.");
-					request.setAttribute("backgroundcolor", "red");
 				} else if (user.getRemainingLogins() <= 0) {
 					response.getOutputStream().println();
-					request.setAttribute("message", "lock");
 					request.setAttribute("message2", "No logins left.");
-					request.setAttribute("backgroundcolor", "red");
 				} else if (user.getFailedLoginCount() <= 3 && user.getRemainingLogins() > 0) {
 					request.setAttribute("message", "lock_open");
 					request.setAttribute("backgroundcolor", "green");
 					
-					// TODO open door
+					openDoor();
 				}
 
 				request.getRequestDispatcher("/info.jsp").forward(request, response);
@@ -74,7 +85,21 @@ public class OpenDoorServlet extends HttpServlet {
 		}
 	}
 
+	public void openDoor() throws InterruptedException {
+		if(pin == null) {
+			throw new RuntimeException("Output GPIO not initiated. This should not be able to happen.");
+		}
+		pin.low();
+        try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			throw e;
+		} finally {
+			pin.high();
+		}
+	}
+	
 	public void destroy() {
-	      // TODO release gpio in correct state
-	   }
+		 gpio.shutdown();
+	  }
 }
