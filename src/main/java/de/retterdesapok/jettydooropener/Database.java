@@ -11,14 +11,17 @@ import java.sql.Statement;
 public class Database {
 
 	public static final String DB_CONNECTION_STRING = "jdbc:sqlite:DoorOpener.sqlite";
-	private static final String CREATE_STATEMENT_PATH = "src/main/resources/sql/create_database.sql";
+	private static final String CREATE_STATEMENT = " CREATE TABLE IF NOT EXISTS USER ( "
+			+ " ID                INTEGER   PRIMARY KEY AUTOINCREMENT, " + " USERNAME          TEXT      NOT NULL, "
+			+ " PASSWORDHASH      TEXT      NOT NULL, " + " FAILEDLOGINCOUNT  INTEGER, " + " REMAININGLOGINS   INTEGER "
+			+ " );";
 
 	private static Database INSTANCE = null;
 
 	private Connection connection;
 
 	private Database() {
-	    try {
+		try {
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -31,7 +34,7 @@ public class Database {
 		return INSTANCE;
 	}
 
-	private static void ensureInitialized() {
+	public static void ensureInitialized() {
 		if (INSTANCE == null) {
 			INSTANCE = new Database();
 		}
@@ -49,11 +52,7 @@ public class Database {
 	private void createNewDatabase() {
 		try (Connection connection = DriverManager.getConnection(DB_CONNECTION_STRING);
 				Statement statement = connection.createStatement();) {
-			String createStatement = IOUtility.getFileContent(CREATE_STATEMENT_PATH);
-
-			if (createStatement != null) {
-				statement.execute(createStatement);
-			}
+			statement.execute(CREATE_STATEMENT);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}

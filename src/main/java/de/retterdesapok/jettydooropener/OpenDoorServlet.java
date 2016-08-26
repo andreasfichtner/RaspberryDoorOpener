@@ -25,6 +25,9 @@ public class OpenDoorServlet extends HttpServlet {
 	@Override
 	public void init() {
 		
+		// Init database
+		Database.GET();
+		
 		pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "relay1", PinState.HIGH);
 
         // We never want low, except for the second where we open the door
