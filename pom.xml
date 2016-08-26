@@ -35,11 +35,20 @@
       <version>${jettyVersion}</version>
     </dependency>
     
-     <dependency>
-      <groupId>org.xerial</groupId>
-      <artifactId>sqlite-jdbc</artifactId>
-      <version>3.8.11.2</version>
-    </dependency>
+    <!-- Broken for raspberrypi 					-->
+    <!--  <dependency>								-->
+    <!--   <groupId>org.xerial</groupId>			-->
+    <!--   <artifactId>sqlite-jdbc</artifactId>		-->
+    <!--   <version>3.8.11.2</version>				-->
+    <!-- </dependency>								-->
+    
+    <dependency>
+ 		<groupId>org.xerial</groupId>
+ 		<artifactId>sqlite-jdbc</artifactId>
+		<version>3.7.15</version>
+		<scope>system</scope>
+		<systemPath>${project.basedir}/sqlite-jdbc-3.7.15.jar</systemPath>
+	</dependency>
     
     <dependency>
     <groupId>com.pi4j</groupId>
