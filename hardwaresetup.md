@@ -20,7 +20,7 @@ A reference on the raspberry pins can be found here:
 http://www.raspberrypi-spy.co.uk/2012/06/simple-guide-to-the-rpi-gpio-header-and-pins/
 
 * Connect a raspberry 5V out pin (Pin 2 or Pin 4) to VCC
-* Connect the raspberry GPIO 17 (Pin 11) to IN1 (or any other IN)
+* Connect the raspberry GPIO 17 (Pin 11) to IN1 (or any other IN) with a 1kΩ resistor
 * Connect a raspberry ground pin (e.g. Pin 9) to GND
 
 Done. To test your setup, you can switch the GPIO via command line. The relay I mentioned above has a built-in led that shows you the on/off state. You can also hear a clicking sound each time the relay switches. Instructions:

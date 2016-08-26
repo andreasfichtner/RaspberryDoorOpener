@@ -30,7 +30,7 @@ To run it more permanently (see my note above), build it as a war file
         mvn package
 and run it in a jetty server.
 3. Create a user
-    - Open raspberrypi:8080 (or any URL you might have chosen) and submit an empty form. This will create an empty sql database with a user table. For obvious reasons, no default user is created.
+    - Open raspberrypi:8080/create-database (replace URL if necessary). This will create an empty sql database with a user table. For obvious reasons, no default user is created.
     - Think of a password and generate its md5 hash.
     - Edit the database via command line or any tool you like:
     

@@ -28,4 +28,14 @@
         <url-pattern>/open</url-pattern>
     </servlet-mapping>
 	
+	 <servlet>
+        <servlet-name>CreateDatabaseServlet</servlet-name>
+        <servlet-class>de.retterdesapok.jettydooropener.CreateDatabaseServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CreateDatabaseServlet</servlet-name>
+        <url-pattern>/create-database</url-pattern>
+    </servlet-mapping>
+	
 </web-app>

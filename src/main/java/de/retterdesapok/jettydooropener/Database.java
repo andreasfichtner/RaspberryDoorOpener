@@ -1,5 +1,6 @@
 package de.retterdesapok.jettydooropener;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,7 +11,7 @@ import java.sql.Statement;
 /** Singleton */
 public class Database {
 
-	public static final String DB_CONNECTION_STRING = "jdbc:sqlite:DoorOpener.sqlite";
+	public static String dbConnectionString = "jdbc:sqlite:DoorOpener.sqlite";
 	private static final String CREATE_STATEMENT = " CREATE TABLE IF NOT EXISTS USER ( "
 			+ " ID                INTEGER   PRIMARY KEY AUTOINCREMENT, " + " USERNAME          TEXT      NOT NULL, "
 			+ " PASSWORDHASH      TEXT      NOT NULL, " + " FAILEDLOGINCOUNT  INTEGER, " + " REMAININGLOGINS   INTEGER "
@@ -22,11 +23,23 @@ public class Database {
 
 	private Database() {
 		try {
+			String currentFolder = new java.io.File( "." ).getCanonicalPath();
+			dbConnectionString = "jdbc:sqlite:" + currentFolder + "/" + "DoorOpener.sqlite";
+			System.out.println("Database connection string: "+ dbConnectionString);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		try {
 			Class.forName("org.sqlite.JDBC");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		ensureDatabaseExists();
+	}
+	
+	public String getConnectionString() {
+		return dbConnectionString;
 	}
 
 	public synchronized static Database GET() {
@@ -41,7 +54,7 @@ public class Database {
 	}
 
 	private void ensureDatabaseExists() {
-		try (Connection connection = DriverManager.getConnection(DB_CONNECTION_STRING);
+		try (Connection connection = DriverManager.getConnection(dbConnectionString);
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT 1 FROM USER");) {
 		} catch (Exception e) {
@@ -50,7 +63,7 @@ public class Database {
 	}
 
 	private void createNewDatabase() {
-		try (Connection connection = DriverManager.getConnection(DB_CONNECTION_STRING);
+		try (Connection connection = DriverManager.getConnection(dbConnectionString);
 				Statement statement = connection.createStatement();) {
 			statement.execute(CREATE_STATEMENT);
 		} catch (Exception e) {
@@ -60,7 +73,7 @@ public class Database {
 
 	public synchronized Connection getConnection() throws SQLException {
 		if (connection == null) {
-			connection = DriverManager.getConnection(DB_CONNECTION_STRING);
+			connection = DriverManager.getConnection(dbConnectionString);
 		}
 		return connection;
 	}
