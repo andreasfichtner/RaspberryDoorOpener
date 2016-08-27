@@ -80,17 +80,17 @@ public class OpenDoorServlet extends HttpServlet {
 
 					request.getRequestDispatcher("/info.jsp").forward(request, response);
 
-					new Runnable() {
-
-						@Override
-						public void run() {
-							try {
+					Thread thread = new Thread() {
+				        public void run()
+				        {
+				        	try {
 								openDoor();
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-						}
-					}.run();
+				        }
+				    };
+				    thread.start();
 				}
 
 				return;
