@@ -19,17 +19,23 @@ public class OpenDoorServlet extends HttpServlet {
 	public static String PARAM_USERNAME = "username";
 	public static String PARAM_PASSWORD = "password";
 	
-	final GpioController gpio = GpioFactory.getInstance();
+ GpioController gpio = null;
 	GpioPinDigitalOutput pin = null;
 	
 	@Override
 	public void init() {
 		
-		// Init GPIO
-		pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "relay1", PinState.HIGH);
+		try {
+			// Init GPIO
+			gpio = GpioFactory.getInstance();
+			pin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "relay1", PinState.HIGH);
 
-        // We never want low, except for the second where we open the door
-        pin.setShutdownOptions(true, PinState.HIGH);
+			// We never want low, except for the second where we open the door
+			pin.setShutdownOptions(true, PinState.HIGH);
+		} catch (Throwable e) {
+			// Might happen if we test on a non-raspberry
+			System.out.println("Info: No GPIO support.");
+		}
 	}
 	
 	@Override
@@ -72,7 +78,17 @@ public class OpenDoorServlet extends HttpServlet {
 					request.setAttribute("message", "lock_open");
 					request.setAttribute("backgroundcolor", "green");
 					
-					openDoor();
+					new Runnable() {
+						
+						@Override
+						public void run() {
+							try {
+								openDoor();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+					}.run();
 				}
 
 				request.getRequestDispatcher("/info.jsp").forward(request, response);

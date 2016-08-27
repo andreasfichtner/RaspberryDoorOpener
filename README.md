@@ -12,7 +12,7 @@ This small project contains software for a raspberry pi and hardware instruction
 *Actually, there are many good reasons against this, so please only do this if you know what you are doing. This is a just for fun project and you should not expect the authentication to be bullet proof. Enable https in jetty. Also, your raspberry pi should not be reachable from outside your home wifi and have strong passwords for all remote users.
 
 ### Why?
-Because we can. And because forgetting ones smartphone, notebook and keys at home is very unlikely.
+Because I like hardware projects. And because forgetting ones smartphone, notebook and keys at home is very unlikely.
 
 ### How?
 A jetty webserver running on the raspberry will trigger a relay to close the door opener circuit.

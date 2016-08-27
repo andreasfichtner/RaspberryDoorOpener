@@ -16,7 +16,7 @@ public class CreateDatabaseServlet extends HttpServlet {
 		// Init database
 		Database.GET();
 		
-		response.getOutputStream().println("An empty database should exist in " + Database.GET().getConnectionString());
+		response.getOutputStream().println("Connection string: " + Database.GET().getConnectionString());
 
 		response.setStatus(200);
 	}

@@ -1,12 +1,12 @@
 <html>
 <head>
   <!--Import Google Icon Font-->
-  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <!--Import materialize.css-->
   <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta charset="utf-8">
-  <title>raspi door opener</title>
+  <title>raspberry pi door opener</title>
 </head>
 <body>
     <div class="card-panel ${backgroundcolor}" style="width: 500px;  margin: auto; margin-top: 100px; height:325px;">
