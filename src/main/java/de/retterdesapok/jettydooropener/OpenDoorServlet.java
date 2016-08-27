@@ -18,13 +18,13 @@ public class OpenDoorServlet extends HttpServlet {
 
 	public static String PARAM_USERNAME = "username";
 	public static String PARAM_PASSWORD = "password";
-	
- GpioController gpio = null;
+
+	GpioController gpio = null;
 	GpioPinDigitalOutput pin = null;
-	
+
 	@Override
 	public void init() {
-		
+
 		try {
 			// Init GPIO
 			gpio = GpioFactory.getInstance();
@@ -37,7 +37,7 @@ public class OpenDoorServlet extends HttpServlet {
 			System.out.println("Info: No GPIO support.");
 		}
 	}
-	
+
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -77,9 +77,11 @@ public class OpenDoorServlet extends HttpServlet {
 				} else if (user.getFailedLoginCount() <= 3 && user.getRemainingLogins() > 0) {
 					request.setAttribute("message", "lock_open");
 					request.setAttribute("backgroundcolor", "green");
-					
+
+					request.getRequestDispatcher("/info.jsp").forward(request, response);
+
 					new Runnable() {
-						
+
 						@Override
 						public void run() {
 							try {
@@ -91,7 +93,6 @@ public class OpenDoorServlet extends HttpServlet {
 					}.run();
 				}
 
-				request.getRequestDispatcher("/info.jsp").forward(request, response);
 				return;
 			} catch (Exception e) {
 				response.getOutputStream().println(e.getLocalizedMessage());
@@ -103,20 +104,21 @@ public class OpenDoorServlet extends HttpServlet {
 	}
 
 	public void openDoor() throws InterruptedException {
-		if(pin == null) {
+		if (pin == null) {
 			throw new RuntimeException("Output GPIO not initiated. This should not be able to happen.");
 		}
 		pin.low();
-        try {
-			Thread.sleep(3000);
+		try {
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			throw e;
 		} finally {
+			// Make sure we always stop
 			pin.high();
 		}
 	}
-	
+
 	public void destroy() {
-		 gpio.shutdown();
-	  }
+		gpio.shutdown();
+	}
 }
