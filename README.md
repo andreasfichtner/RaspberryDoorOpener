@@ -1,6 +1,4 @@
-# RaspberryDoorOpener - [Work in progress]
-
-Note: Right now, the jetty server will not actually trigger the relay, it will only display a message to confirm your login.
+# RaspberryDoorOpener
 
 ## Introduction
 ### What?
@@ -8,14 +6,16 @@ Some houses and apartments are equipped with automatic door openers. The door op
 an electromagnet that moves part of the lock and thus allows the door to be opened.
 So why not replace that switch with a relay and open the door from your browser*?
 This small project contains software for a raspberry pi and hardware instructions that enable us to do just that. 
+The result might look like
+[this](https://github.com/retterdesapok/RaspberryDoorOpener/blob/master/raspberrypi-relay.jpg).
 
 *Actually, there are many good reasons against this, so please only do this if you know what you are doing. This is a just for fun project and you should not expect the authentication to be bullet proof. Enable https in jetty. Also, your raspberry pi should not be reachable from outside your home wifi and have strong passwords for all remote users.
 
 ### Why?
-Because I like hardware projects. And because forgetting ones smartphone, notebook and keys at home is very unlikely.
+Because I wanted to do a small hardware project. And because forgetting ones smartphone, notebook and keys at home is very unlikely.
 
 ### How?
-A jetty webserver running on the raspberry will trigger a relay to close the door opener circuit.
+A jetty webserver running on the raspberry triggers a relay to close the door opener circuit.
 A sqlite-database is used for user authentication. To open the door, either point your browser to raspberrypi:8080 and fill in your data or send an http post with username and password fields.
 
 ## Setup
@@ -37,3 +37,7 @@ and run it in a jetty server.
             insert into user (username, passwordhash, failedlogincount, remaininglogins) VALUES ('Yourname', 'yourmd5hash', 0, 99);
     This creates a user with username Yourname, your chosen password and 99 remaining logins.
 4. Go to the login form again and use your newly created credentials to open your door.
+
+<p align="center">
+<img src="https://github.com/retterdesapok/RaspberryDoorOpener/blob/master/raspberrydooropener-ui.gif" alt="UI gif" style="width:304px;height:228px;align:center;">
+</p>

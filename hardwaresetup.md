@@ -28,7 +28,9 @@ http://luketopia.net/2013/07/28/raspberry-pi-gpio-via-the-shell/
 
 Connecting the door opener
 --------------------------
-The other side of the relay simply opens or closes a circuit, as does your door opener button. Look there for the cables that need to be connected. Sidenote: It is probably a good idea to keep the button working, so you might want to extend the wires from there to the relay. 
+The other side of the relay simply opens or closes a circuit, as does your door opener button. Look there for the cables that need to be connected. Mine looks like [this](https://github.com/retterdesapok/RaspberryDoorOpener/blob/master/door-opener-from-inside.jpg)
+and I had to connect 0 and 1.
+Sidenote: It is probably a good idea to keep the button working, so you might want to extend the wires from there to the relay. 
 Connect one of them to the left and one to the center contact on the relay. This works for the mentioned relay, if it does not, try other combinations. Possible outcomes:
 - Your door opens immediately: try again
 - Your door does not open even though the relay is switched (led is on): try again
